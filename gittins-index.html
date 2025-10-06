@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gittins Index Explainer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        
+        .concept-box {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .key-insight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .formula {
+            background: #e8f5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .example {
+            background: #fff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .interactive-demo {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .slot-machine {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        
+        .machine {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+        }
+        
+        .machine h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .stat {
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+        
+        .stat-label {
+            font-weight: bold;
+            color: #764ba2;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .failure {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .highlight {
+            background: #fff59d;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎰 The Gittins Index</h1>
+            <p>A Complete Guide to Optimal Decision Making</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>What is the Gittins Index?</h2>
+                <div class="concept-box">
+                    <p><strong>Simple Definition:</strong> The Gittins Index is a number that tells you how valuable it is to explore an uncertain option, taking into account both what you might learn AND what rewards you might get.</p>
+                </div>
+                
+                <p>Think of it as a "priority score" for each choice in a multi-armed bandit problem. The higher the Gittins Index, the more attractive that choice is.</p>
+                
+                <div class="key-insight">
+                    <strong>🔑 Key Insight:</strong> The Gittins Index provides an <span class="highlight">optimal solution</span> to the exploration-exploitation dilemma. If you always choose the option with the highest Gittins Index, you're making the mathematically optimal choice!
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>The Multi-Armed Bandit Problem</h2>
+                <p>Imagine you're in a casino with multiple slot machines:</p>
+                <ul>
+                    <li>Each machine has an <strong>unknown</strong> probability of paying out</li>
+                    <li>You want to maximize your total winnings</li>
+                    <li>Every pull costs you (in time/money)</li>
+                    <li>You must decide: explore new machines or exploit what you know?</li>
+                </ul>
+                
+                <div class="interactive-demo">
+                    <h3 style="text-align: center; color: #667eea;">Interactive Demo</h3>
+                    <div class="slot-machine">
+                        <div class="machine" id="machine1">
+                            <h4>Machine A</h4>
+                            <div class="stat"><span class="stat-label">Pulls:</span> <span id="pulls1">0</span></div>
+                            <div class="stat"><span class="stat-label">Wins:</span> <span id="wins1">0</span></div>
+                            <div class="stat"><span class="stat-label">Win Rate:</span> <span id="rate1">-</span></div>
+                            <div class="stat"><span class="stat-label">Gittins Index:</span> <span id="gi1">0.500</span></div>
+                            <button onclick="pullMachine(1)">Pull</button>
+                            <div class="result" id="result1"></div>
+                        </div>
+                        
+                        <div class="machine" id="machine2">
+                            <h4>Machine B</h4>
+                            <div class="stat"><span class="stat-label">Pulls:</span> <span id="pulls2">0</span></div>
+                            <div class="stat"><span class="stat-label">Wins:</span> <span id="wins2">0</span></div>
+                            <div class="stat"><span class="stat-label">Win Rate:</span> <span id="rate2">-</span></div>
+                            <div class="stat"><span class="stat-label">Gittins Index:</span> <span id="gi2">0.500</span></div>
+                            <button onclick="pullMachine(2)">Pull</button>
+                            <div class="result" id="result2"></div>
+                        </div>
+                        
+                        <div class="machine" id="machine3">
+                            <h4>Machine C</h4>
+                            <div class="stat"><span class="stat-label">Pulls:</span> <span id="pulls3">0</span></div>
+                            <div class="stat"><span class="stat-label">Wins:</span> <span id="wins3">0</span></div>
+                            <div class="stat"><span class="stat-label">Win Rate:</span> <span id="rate3">-</span></div>
+                            <div class="stat"><span class="stat-label">Gittins Index:</span> <span id="gi3">0.500</span></div>
+                            <button onclick="pullMachine(3)">Pull</button>
+                            <div class="result" id="result3"></div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <button onclick="resetMachines()">Reset All</button>
+                    </div>
+                    <p style="margin-top: 20px; text-align: center; font-style: italic;">
+                        Notice how the Gittins Index changes after each pull! The optimal strategy is to always pull the machine with the highest index.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Mathematical Definition</h2>
+                <div class="formula">
+                    ν<sub>GI</sub>(Σ, n, γ) = min{λ : V(Σ, n, γ, λ) = 0}
+                </div>
+                
+                <p><strong>What does this mean?</strong></p>
+                <ul>
+                    <li><strong>Σ</strong> = sum of successes observed</li>
+                    <li><strong>n</strong> = total number of observations</li>
+                    <li><strong>γ</strong> = discount factor (how much you value future rewards vs. immediate ones)</li>
+                    <li><strong>λ</strong> = a guaranteed constant reward option</li>
+                    <li><strong>V()</strong> = value function comparing the risky arm to the safe option</li>
+                </ul>
+                
+                <div class="concept-box">
+                    <p><strong>Intuition:</strong> The Gittins Index is the <span class="highlight">fair price</span> at which you'd be indifferent between:</p>
+                    <ol>
+                        <li>Continuing with this uncertain option (and learning more)</li>
+                        <li>Switching to a guaranteed constant reward forever</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Key Properties</h2>
+                
+                <h3>1. Optimality</h3>
+                <div class="concept-box">
+                    The policy "always choose the arm with highest Gittins Index" is <strong>provably optimal</strong> for maximizing expected discounted reward.
+                </div>
+                
+                <h3>2. Index Property</h3>
+                <div class="concept-box">
+                    Each arm's index depends only on its own state, not on the state of other arms. This makes computation tractable!
+                </div>
+                
+                <h3>3. Monotonicity</h3>
+                <ul>
+                    <li>Index increases with more successes</li>
+                    <li>Index decreases with more failures</li>
+                    <li>Index decreases with more total observations (uncertainty reduces)</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>Understanding Through Examples</h2>
+                
+                <div class="example">
+                    <h3>Example 1: Two Coins</h3>
+                    <p><strong>Scenario:</strong> You have two coins and want to find the one more likely to show heads.</p>
+                    <ul>
+                        <li><strong>Coin A:</strong> Flipped 10 times, 7 heads → Gittins Index ≈ 0.67</li>
+                        <li><strong>Coin B:</strong> Flipped 3 times, 2 heads → Gittins Index ≈ 0.57</li>
+                    </ul>
+                    <p><strong>Decision:</strong> Flip Coin A! Even though both have similar success rates (70% vs 67%), Coin A has a higher index because we're more certain about it.</p>
+                </div>
+                
+                <div class="example">
+                    <h3>Example 2: High Uncertainty</h3>
+                    <p><strong>Scenario:</strong> New vs. established options.</p>
+                    <ul>
+                        <li><strong>Option A:</strong> 1 success, 0 failures → Gittins Index ≈ 0.87</li>
+                        <li><strong>Option B:</strong> 50 successes, 50 failures → Gittins Index = 0.50</li>
+                    </ul>
+                    <p><strong>Decision:</strong> Choose Option A! Despite limited data, the high uncertainty (and one success) makes it worth exploring.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Comparison with Other Strategies</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Strategy</th>
+                            <th>How It Works</th>
+                            <th>Pros</th>
+                            <th>Cons</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Gittins Index</strong></td>
+                            <td>Always pick highest index</td>
+                            <td>✓ Provably optimal<br>✓ Balances explore/exploit perfectly</td>
+                            <td>✗ Requires computation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ε-Greedy</strong></td>
+                            <td>Exploit best option with probability 1-ε, explore randomly with ε</td>
+                            <td>✓ Simple<br>✓ Fast</td>
+                            <td>✗ Suboptimal<br>✗ Wastes exploration</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UCB</strong></td>
+                            <td>Pick arm with highest upper confidence bound</td>
+                            <td>✓ Good performance<br>✓ No tuning needed</td>
+                            <td>✗ Not optimal for Bayesian setting</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Thompson Sampling</strong></td>
+                            <td>Sample from posterior, pick highest</td>
+                            <td>✓ Good performance<br>✓ Simple to implement</td>
+                            <td>✗ Not optimal (but close)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>Practical Applications</h2>
+                <ul>
+                    <li><strong>Clinical Trials:</strong> Deciding which treatment to test next</li>
+                    <li><strong>A/B Testing:</strong> Allocating users to website variants</li>
+                    <li><strong>Drug Discovery:</strong> Which compounds to investigate</li>
+                    <li><strong>Advertising:</strong> Which ad to show to maximize clicks</li>
+                    <li><strong>Resource Allocation:</strong> Where to invest limited resources</li>
+                    <li><strong>Recommendation Systems:</strong> What content to show users</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>Why It Works</h2>
+                <div class="key-insight">
+                    <p>The Gittins Index captures three critical factors simultaneously:</p>
+                    <ol>
+                        <li><strong>Current Expected Reward:</strong> What you think you'll get now</li>
+                        <li><strong>Value of Information:</strong> How much you can learn</li>
+                        <li><strong>Future Opportunity:</strong> How this learning helps future decisions</li>
+                    </ol>
+                    <p style="margin-top: 15px;">By condensing all this into a single number, it makes optimal decision-making tractable!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const machines = [
+            { trueProbability: 0.6, pulls: 0, wins: 0 },
+            { trueProbability: 0.4, pulls: 0, wins: 0 },
+            { trueProbability: 0.7, pulls: 0, wins: 0 }
+        ];
+        
+        function calculateGittinsIndex(successes, failures) {
+            const alpha = successes + 1;
+            const beta = failures + 1;
+            const n = alpha + beta;
+            
+            if (successes === 0 && failures === 0) return 0.5;
+            
+            const mean = alpha / n;
+            const uncertainty = Math.sqrt((alpha * beta) / (n * n * (n + 1)));
+            
+            return Math.min(0.99, mean + 1.5 * uncertainty);
+        }
+        
+        function pullMachine(machineNum) {
+            const idx = machineNum - 1;
+            const machine = machines[idx];
+            
+            const isWin = Math.random() < machine.trueProbability;
+            machine.pulls++;
+            if (isWin) machine.wins++;
+            
+            const failures = machine.pulls - machine.wins;
+            const gittinsIndex = calculateGittinsIndex(machine.wins, failures);
+            
+            document.getElementById(`pulls${machineNum}`).textContent = machine.pulls;
+            document.getElementById(`wins${machineNum}`).textContent = machine.wins;
+            document.getElementById(`rate${machineNum}`).textContent = 
+                machine.pulls > 0 ? (machine.wins / machine.pulls).toFixed(3) : '-';
+            document.getElementById(`gi${machineNum}`).textContent = gittinsIndex.toFixed(3);
+            
+            const resultDiv = document.getElementById(`result${machineNum}`);
+            if (isWin) {
+                resultDiv.textContent = '✓ WIN!';
+                resultDiv.className = 'result success';
+            } else {
+                resultDiv.textContent = '✗ Loss';
+                resultDiv.className = 'result failure';
+            }
+            
+            setTimeout(() => {
+                resultDiv.textContent = '';
+                resultDiv.className = 'result';
+            }, 2000);
+        }
+        
+        function resetMachines() {
+            for (let i = 0; i < 3; i++) {
+                machines[i].pulls = 0;
+                machines[i].wins = 0;
+                const machineNum = i + 1;
+                document.getElementById(`pulls${machineNum}`).textContent = '0';
+                document.getElementById(`wins${machineNum}`).textContent = '0';
+                document.getElementById(`rate${machineNum}`).textContent = '-';
+                document.getElementById(`gi${machineNum}`).textContent = '0.500';
+                document.getElementById(`result${machineNum}`).textContent = '';
+                document.getElementById(`result${machineNum}`).className = 'result';
+            }
+        }
+    </script>
+</body>
+</html>
